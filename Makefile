@@ -9,7 +9,7 @@ build: ## build develoment environment with sail
 	./vendor/bin/sail npm install
 	./vendor/bin/sail npm run build
 
-remove:
+remove: ## removes current containers
 	./vendor/bin/sail stop $(docker ps -a -q)
 	./vendor/bin/sail rm $(docker ps -a -q)
 
