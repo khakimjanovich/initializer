@@ -6,9 +6,12 @@ build: ## build develoment environment with sail
 	./vendor/bin/sail up -d --build
 	./vendor/bin/sail artisan key:generate
 	./vendor/bin/sail artisan migrate
-	npm install
-	npm run build
+	./vendor/bin/sail npm install
+	./vendor/bin/sail npm run build
 
+remove:
+	./vendor/bin/sail stop $(docker ps -a -q)
+	./vendor/bin/sail rm $(docker ps -a -q)
 
 .PHONY: help
 help:
