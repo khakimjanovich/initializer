@@ -1,1 +1,4 @@
-Run ./install.sh
+Run 
+```bash
+   bash ./install.sh
+```
