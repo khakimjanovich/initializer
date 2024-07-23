@@ -1,7 +1,6 @@
 .DEFAULT_GOAL := help
 
 build: ## builds development environment with sail
-	if ! [ -f .env ];then cp .env.example .env;fi
 	composer install
 	./vendor/bin/sail up -d --build
 	./vendor/bin/sail artisan key:generate
