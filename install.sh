@@ -64,11 +64,21 @@ else
   echo "Docker Compose is already installed."
 fi
 
+# Check for PHP
+if ! [ -x "$(command -v php)" ]; then
+  echo "PHP is not installed. Installing PHP..."
+  sudo apt-get update
+  sudo apt-get install -y php-cli php-mbstring unzip curl
+else
+  echo "PHP is already installed."
+fi
+
 # Check for Composer
 if ! [ -x "$(command -v composer)" ]; then
   echo "Composer is not installed. Installing Composer..."
-  curl -sS https://getcomposer.org/installer | php
-  sudo mv composer.phar /usr/local/bin/composer
+  curl -sS https://getcomposer.org/installer -o composer-setup.php
+  php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+  rm composer-setup.php
 else
   echo "Composer is already installed."
 fi
