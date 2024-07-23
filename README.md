@@ -15,5 +15,5 @@ to see what commands available
 Run this command to build application
 
 ```bash
-    make build
+  make build
 ```
