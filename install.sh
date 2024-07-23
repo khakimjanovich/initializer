@@ -11,11 +11,12 @@ prompt_for_port
 
 # Update the .env file with the provided port
 if [ -f .env ]; then
-  sed -i "s/APP_PORT=.*$/APP_PORT=${PORT}/" .env
+  sed -i.bak "s/APP_PORT=.*$/APP_PORT=${PORT}/" .env
 else
   cp .env.example .env
   echo "APP_PORT=${PORT}" >> .env
 fi
 
+rm rf .env.bak
 # Run Makefile to build the development environment
 make build
