@@ -1,19 +1,12 @@
 .DEFAULT_GOAL := help
 
 build: ## builds development environment with sail
-	composer install
-	./vendor/bin/sail up -d --build
-	./vendor/bin/sail artisan key:generate
-	./vendor/bin/sail artisan migrate
-	./vendor/bin/sail npm install
-	./vendor/bin/sail npm run build
+	docker-compose up --build --remove-orphans -d
+	docker exec -it amediatv-frankenphp-1 npm run build
 
 update: ## updates from git and refreshes the containers
 	git pull origin HEAD
-	./vendor/bin/sail composer install
-	./vendor/bin/sail artisan migrate
-	./vendor/bin/sail npm install
-	./vendor/bin/sail npm run build
+
 
 remove: ## removes current containers
 	./vendor/bin/sail stop $(docker ps -a -q)
