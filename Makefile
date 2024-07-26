@@ -9,7 +9,7 @@ DEFAULT_NPM_PORT1 := 3000
 DEFAULT_NPM_PORT2 := 3001
 DEFAULT_NPM_PORT3 := 5173
 
-run:
+run: clean
 	@read -p "Enter app port (default: 80): " APP_PORT; \
 	APP_PORT=$${APP_PORT:-$(DEFAULT_APP_PORT)}; \
 	read -p "Enter MySQL port (default: 3306): " MYSQL_PORT; \
