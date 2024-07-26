@@ -9,7 +9,15 @@ DEFAULT_NPM_PORT1 := 3000
 DEFAULT_NPM_PORT2 := 3001
 DEFAULT_NPM_PORT3 := 5173
 
-run:
+check-src:
+	@if [ ! -d "src" ]; then \
+		echo "src folder does not exist. Creating..."; \
+		mkdir src; \
+	else \
+		echo "src folder already exists. Doing nothing."; \
+	fi
+
+set-ports:
 	@read -p "Enter app port (default: 80): " APP_PORT; \
 	APP_PORT=$${APP_PORT:-$(DEFAULT_APP_PORT)}; \
 	read -p "Enter MySQL port (default: 3306): " MYSQL_PORT; \
@@ -33,7 +41,10 @@ run:
 		-e "s/3001:3001/$${NPM_PORT2}:3001/" \
 		-e "s/5173:5173/$${NPM_PORT3}:5173/" \
 		docker-compose.yml.template > docker-compose.yml
+	@docker compose run --rm composer create-project laravel/laravel .
+create:check-src set-ports
 
+set-up:set-ports
 	@test -f ./src/.env || cp ./src/.env.example ./src/.env
 	@docker compose run --rm composer install
 	@docker compose run --rm artisan migrate
@@ -42,6 +53,13 @@ run:
 	@docker compose run --rm npm run build
 	@docker compose up -d
 
+run:
+	@docker compose run --rm composer install
+	@docker compose run --rm artisan migrate
+	@docker compose run --rm artisan key:generate
+	@docker compose run --rm npm install
+	@docker compose run --rm npm run build
+	@docker compose up -d
 clean:
 	@docker compose down
 	@rm -f docker-compose.yml
