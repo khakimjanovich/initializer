@@ -34,8 +34,12 @@ run:
 		-e "s/5173:5173/$${NPM_PORT3}:5173/" \
 		docker-compose.yml.template > docker-compose.yml
 
+	@test -f ./src/.env || cp ./src/.env.example ./src/.env
 	@docker compose run --rm composer install
+	@docker compose run --rm artisan migrate
+	@docker compose run --rm artisan key:generate
 	@docker compose run --rm npm install
+	@docker compose run --rm npm run build
 	@docker compose up -d
 
 clean:
@@ -45,5 +49,7 @@ clean:
 update:
 	git pull origin HEAD
 	@docker compose run --rm composer install
+	@docker compose run --rm artisan migrate
 	@docker compose run --rm npm install
+	@docker compose run --rm npm run build
 	@docker compose up --build -d
